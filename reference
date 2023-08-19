@@ -1,0 +1,38 @@
+4.	Scenario on abstarct class?
+5.	Where you use abstract method in your framework?
+
+
+
+//get the size of the select class
+Select drpCountry = new Select(driver.findElement(By.name("country")));	
+		int dropsize=drpCountry.getOptions().size();
+		System.out.println(dropsize);
+
+
+//sendKeys is not working then use the javascript to send the data
+		String javaScriptCode = "document.getElementById('userName').value = 'kanha'";
+		// Execute the JavaScript code.
+		((JavascriptExecutor) driver).executeScript(javaScriptCode);
+
+
+
+//this way to select the dropdown
+List<WebElement> ele1 = driver.findElements(By.tagName("option"));
+ele1.get(10).click();
+
+
+
+//this way to select the dropdown
+driver.findElement(By.name("country")).click();
+driver.findElement(By.xpath("//option[@value='CHINA']")).click();
+
+
+Tell me the real time scenario of polymorphism. Where you have used Polymorphism.
+
+
+
+//gettext is not working then use the javascript to gettext
+WebElement element = driver.findElement(By.xpath("(//font[@face=\"Arial, Helvetica, sans-serif\"])[3]"));
+        // Get the text using JavascriptExecutor
+        String text = (String) ((JavascriptExecutor) driver).executeScript("return arguments[0].textContent;", element);
+        System.out.println("Text from the element: " + text);
