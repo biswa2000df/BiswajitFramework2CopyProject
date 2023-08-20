@@ -3,8 +3,12 @@ package FRAMEWORK;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -28,11 +32,16 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 	ExtentHtmlReporter htmlReport;
 	ExtentReports extent;
 	static ExtentTest test;
-	static String year;
+	static String yearFormat;
 	static String time;
-	public static String ReportFile;
+	public static String Extent_ReportFile;
+	public static String CSV_ReportFile;
 	public static String ssDatafield = null;
 	public static String ssDataSheet2Value = null;
+	
+	static String IP = null;
+	static String HostName = "";
+	static String ZoneName = null;
 
 	public String takeScreenShot(WebDriver driver, String TestCase_No) throws IOException {
 		File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -45,7 +54,7 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 	public void ScreenshotPathFormat() {
 		Date date = new Date();
 		SimpleDateFormat tm = new SimpleDateFormat("yyyy-MM-dd");
-		year = tm.format(date);
+		yearFormat = tm.format(date);
 		SimpleDateFormat tm1 = new SimpleDateFormat("HH_mm_ss");
 		time = tm1.format(date);
 	}
@@ -57,6 +66,8 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 		SimpleDateFormat mnt = new SimpleDateFormat(Month);
 		SimpleDateFormat dat = new SimpleDateFormat(Date);
 		SimpleDateFormat tm = new SimpleDateFormat("HH_mm_ss");
+		SimpleDateFormat fullyer = new SimpleDateFormat("yyyy-MM-dd");
+		yearFormat = fullyer.format(date);
 
 		String year = yer.format(date);
 		String Mnth = mnt.format(date);
@@ -79,8 +90,8 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 		String htmlFile = "students.html";
 
 		String destFile = getFormat("YYYY", "MMMM", "dd", "Report");
-		ReportFile = destFile + File.separator + time + "_" + htmlFile;
-		htmlReport = new ExtentHtmlReporter(ReportFile);
+		Extent_ReportFile = destFile + File.separator + time + "_" + htmlFile;
+		htmlReport = new ExtentHtmlReporter(Extent_ReportFile);
 		extent = new ExtentReports();
 		extent.attachReporter(htmlReport);
 
@@ -96,7 +107,7 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 		extent.setSystemInfo("Test Lead", "Prabhat Padhy");
 		extent.setSystemInfo("OS", "Window11");
 		extent.setSystemInfo("Tester Name", "Biswajit");
-		extent.setSystemInfo("Browser", "Chrome");
+		extent.setSystemInfo("Browser", ConnectToMainController.Browser);
 		extent.setSystemInfo("Application URL", "https://www.google.com");
 
 	}
@@ -174,19 +185,43 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 
 	}
 
-	public void WriteCSVFile(String Si_No, String TestCase_No, String Status, String Screenshot_Path)
-			throws IOException {
+	static FileWriter fileWriter;
 
-		FileWriter fileWriter = new FileWriter(destFile + File.separator + csvFile, true);
+	public void WriteCSVFileHeading(String Test_Case, String Description, String ExpectedResult, String ActualResult,
+			String Status, String Date, String Time, String Screenshot_File_Location, String BrowserType, String IP,
+			String HOST, String ZONE) throws IOException {
+		
+		CSV_ReportFile=destFile + File.separator + csvFile;
+		fileWriter = new FileWriter(CSV_ReportFile, true);
 		CSVWriter cw = new CSVWriter(fileWriter);
-		String line1[] = { Si_No, TestCase_No, Status, "=HYPERLINK(\"" + Screenshot_Path + "\")" };
+		String line1[] = { Test_Case, Description, ExpectedResult, ActualResult, Status, Date, Time,
+				Screenshot_File_Location, BrowserType, IP, HOST, ZONE };
 
 		// Writing data to the csv file
 		cw.writeNext(line1);
 		// close the file
 		cw.close();
 
-		DataBaseConnection.DataBase(Si_No, TestCase_No, Status, Screenshot_Path);
+//		DataBaseConnection.DataBase(Si_No, TestCase_No, Status, Screenshot_Path);
+	}
+
+	public void WriteCSVFileData(String Test_Case, String Description, String ExpectedResult, String ActualResult,
+			String Status, String Date, String Time, String Screenshot_File_Location, String BrowserType, String IP,
+			String HOST, String ZONE) throws IOException {
+		CSV_ReportFile=destFile + File.separator + csvFile;
+		fileWriter = new FileWriter(CSV_ReportFile, true);
+		CSVWriter cw = new CSVWriter(fileWriter);
+		String line1[] = { Test_Case, Description, ExpectedResult, ActualResult, Status, Date, Time,
+				"=HYPERLINK(\"" + Screenshot_File_Location + "\")", BrowserType, IP, HOST, ZONE };
+
+//		String line2[] = { Si_No, TestCase_No, Status, "=HYPERLINK(\"" + Screenshot_Path + "\")" };
+
+		// Writing data to the csv file
+		cw.writeNext(line1);
+		// close the file
+		cw.close();
+
+//		DataBaseConnection.DataBase(Si_No, TestCase_No, Status, Screenshot_Path);
 	}
 
 	// Create html Table For Mail Sent
@@ -202,10 +237,9 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 		writer.write("</head>\n<body>\n");
 		writer.write("<table border=\"1\">\n");
 		writer.write(
-				"<tr> <th><font color=\"Green\">Project</font></th><th><font color=\"Blue\">Total TCs</font></th><th><font color=\"Green\">Passed TCs</font></th><th><font color=\"Red\">Failed TCs</font></th><th>Report</th></tr>");
-		String ExtentReportPath = ReportFile;
+				"<tr> <th><font color=\"Lime\">Project</font></th><th><font color=\"Blue\">Total TCs</font></th><th><font color=\"Green\">Passed TCs</font></th><th><font color=\"Red\">Failed TCs</font></th><th>Report</th><th>CSV_File</th></tr>");
 		writer.write("<td>" + ConnectToMainController.Module + "</td><td>" + totalTest + "</td><td>" + pass
-				+ "</td><td>" + fail + "</td><td><a href="+ExtentReportPath+" target=_blank>View Report</a></td>");
+				+ "</td><td>" + fail + "</td><td><a href=" + Extent_ReportFile + " target=_blank>Extent_Report</a></td><td><a href=" + CSV_ReportFile + " target=_blank>CSV</a></td>");
 
 //	            for (int i = 0; i < numRows; i++) {
 //	                writer.write("<tr>\n");
@@ -219,7 +253,42 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 		writer.write("</body>\n</html>");
 		writer.close();
 //		System.out.println("HTML table has been generated in " + filename);
+	}
 
+	public void IP_HOST() {
+		String IP_HOST_ZONE = "";
+		try {
+			InetAddress address = InetAddress.getLocalHost();
+			IP = address.getHostAddress(); // 172.18.32.1
+			HostName = address.getHostName(); // BISWAJIT2000
+		} catch (UnknownHostException e) {
+
+			e.printStackTrace();
+		}
+		// TIME ZONE
+		try {
+			Calendar cal = Calendar.getInstance();
+			long milliDiff = cal.get(Calendar.ZONE_OFFSET); // milliDiff=offset=19800000
+			// Got local offset, now loop through available timezone id(s).
+			String[] zoneName = TimeZone.getAvailableIDs(); // get all the zone name using the array
+
+			for (String id : zoneName) {
+				TimeZone tz = TimeZone.getTimeZone(id); // Example =
+														// sun.util.calendar.ZoneInfo[id="Africa/Addis_Ababa",offset=10800000,dstSavings=0,useDaylight=false,transitions=7,lastRule=null]
+				if (tz.getRawOffset() == milliDiff) { // check the offset is matched
+					// Found a match.
+					ZoneName = id;
+					break;
+				}
+			}
+			IP_HOST_ZONE = IP + "," + HostName + "," + ZoneName;
+			/// System.out.println("IP="+ip+"--------HOSTNAME= "+hostname+"--------ZoneName=
+			/// "+name);
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
 	}
 
 }

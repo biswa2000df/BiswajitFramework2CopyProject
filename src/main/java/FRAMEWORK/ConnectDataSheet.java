@@ -113,6 +113,10 @@ public class ConnectDataSheet extends BrowserClass {
 			// this type is working properly****************************
 
 			utilClass.extentReport(); // call the extent report method
+			utilClass.CsvFileCreate();
+			utilClass.WriteCSVFileHeading("Test_Case", "Description", "ExpectedResult", "ActualResult", "Status",
+					"Date", "Time", "Screenshot_File_Location", "BrowserType", "IP", "HOST", "ZONE");
+			utilClass.IP_HOST();
 
 			int i;
 			for (i = 0; i < rowsList.size(); i++) {
@@ -159,8 +163,13 @@ public class ConnectDataSheet extends BrowserClass {
 					e.printStackTrace();
 					fail++;
 					System.out.println("TotalTest = " + totalTest + " Pass = " + pass + " Fail = " + fail);
-
 				}
+
+				// Write the Data Inside the csv File
+				if (Action.equalsIgnoreCase("CheckVisibility"))
+					utilClass.WriteCSVFileData(Test_Case, Description, DataSheet2Value,
+							String.valueOf(ActionClass.ActualResult), status, utilClass.yearFormat, utilClass.time, destFileScrnshot,
+							ConnectToMainController.Browser, utilClass.IP, utilClass.HostName, utilClass.ZoneName);
 
 			}
 			if (i == rowsList.size()) {
@@ -202,7 +211,7 @@ public class ConnectDataSheet extends BrowserClass {
 					+ File.separator + ConnectToMainController.TestFlow_Path);
 			String query = "SELECT * FROM Sheet2";
 			Recordset recordset = conn.executeQuery(query);
-			
+
 			while (recordset.next()) {
 				DataSheet2Value = recordset.getField(Datafield);
 				System.out.println("DataFiels For Sheet2==================================================== "
