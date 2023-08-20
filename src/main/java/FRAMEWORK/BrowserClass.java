@@ -16,9 +16,7 @@ public class BrowserClass {
 	
 
 	public static void Initialisation(String browser) {
-		
-		
-		
+
 		if (browser.equalsIgnoreCase("chrome")) {
 			WebDriverManager.chromedriver().setup();
 			ChromeOptions option = new ChromeOptions();

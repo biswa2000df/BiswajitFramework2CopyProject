@@ -25,22 +25,10 @@ public class LocatorClass extends ConnectDataSheet {
 	// is failed or
 	// it goes to the catch block to call the datasheet method().
 
-//	LocatorClass xget;
-//	WebElement webElement;
-//	List<WebElement> webElements;
-//	ActionClass actClass;
-//	ConnectDataSheet conSheet;
-
-	/*
-	 * String TestCase_No, String PropertyName, String PropertyValue, String
-	 * Datafield, String Action, String Description, String Neg_Description,
-	 * WebDriver driver
-	 */
-
 	public void xpathpick() throws FilloException, InterruptedException, IOException {
 
-		 webElement = null;
-		 webElements = null;
+		webElement = null;
+		webElements = null;
 
 		locatorClass = new LocatorClass();
 		actClass = new ActionClass();
@@ -73,24 +61,16 @@ public class LocatorClass extends ConnectDataSheet {
 				webElement = driver.findElement(by);
 				webElements = driver.findElements(by);
 				ConnectDataSheet.DataFieldRead();
-				/*TestCase_No, webElement, webElements, Datafield, Action, Description,
-						Neg_Description, driver*/
 			} catch (Exception e) {
-				
+
 //				System.err.println(e.getMessage());
 				e.printStackTrace();
 				ConnectDataSheet.DataFieldRead();
 				fail++;
-				/*TestCase_No, webElement, webElements, Datafield, Action, Description,
-						Neg_Description, driver*/
-
 			}
 		}
-
 		else {
 			ConnectDataSheet.DataFieldRead();
-			/*TestCase_No, webElement, webElements, Datafield, Action, Description,
-					Neg_Description, driver*/
 		}
 
 	}

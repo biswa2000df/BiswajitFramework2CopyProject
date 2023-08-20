@@ -19,26 +19,21 @@ import dev.failsafe.internal.util.Assert;
 
 public class ActionClass extends ConnectDataSheet {
 
-
 	static WebElement FROM;
 	static String GetText;
 	static int Scroll;
 	static UtilScreenshotAndReport utilClass;
 	public static WebElement element;
 	public static List<WebElement> elements;
-	
-	public static boolean ActualResult;
-	
-	ActionClass(){
-	 element = ConnectDataSheet.webElement;
-	 elements = ConnectDataSheet.webElements;
-	}
-	
 
-	public static void actrds()throws InterruptedException, IOException {
-		
-		/*String TestCase_No, WebwebElement webElement, List<WebwebElement> webElements, String DataSheet2Value,
-			String Action, String Description, String Neg_Description, WebDriver driver*/
+	public static boolean ActualResult;
+
+	ActionClass() {
+		element = ConnectDataSheet.webElement;
+		elements = ConnectDataSheet.webElements;
+	}
+
+	public static void actrds() throws InterruptedException, IOException {
 
 		utilClass = new UtilScreenshotAndReport();
 
@@ -60,7 +55,7 @@ public class ActionClass extends ConnectDataSheet {
 				digit = matcher.group(1); // Extracts the digit(s) within the parentheses
 
 			}
-			
+
 			Long l = Long.parseLong(digit);
 			Thread.sleep(l);
 		}
@@ -73,7 +68,7 @@ public class ActionClass extends ConnectDataSheet {
 
 			driver.quit();
 		}
-		
+
 		if (Action.equalsIgnoreCase("Close")) {
 			driver.close();
 		}
@@ -81,26 +76,26 @@ public class ActionClass extends ConnectDataSheet {
 		if (Action.equalsIgnoreCase("BROWSERURL")) {
 			driver.get(DataSheet2Value);
 		}
-		
+
 		if (Action.equalsIgnoreCase("NavigateBrowser")) {
 			driver.navigate().to(DataSheet2Value);
 		}
-		
-		if(Action.equalsIgnoreCase("NewTabOpen")) {
-			
+
+		if (Action.equalsIgnoreCase("NewTabOpen")) {
+
 //			driver.switchTo().newWindow(WindowType.TAB);//This is the anotherway to open a tab
-			
-			((JavascriptExecutor) driver).executeScript("window.open();");//use to open new tab
+
+			((JavascriptExecutor) driver).executeScript("window.open();");// use to open new tab
 
 		}
-		
-		if(Action.contains("WindowHandelByIndex")) {
-			
+
+		if (Action.contains("WindowHandelByIndex")) {
+
 			String digit = getOnlyDigit(Action); // call the getdigit method to get the data
 			int Scroll = Integer.parseInt(digit);
-			 ArrayList<String> windowHandles = new ArrayList<>(driver.getWindowHandles());	
-			 System.out.println("Total window are ==============================> "+windowHandles.size());
-		        driver.switchTo().window(windowHandles.get(Scroll));
+			ArrayList<String> windowHandles = new ArrayList<>(driver.getWindowHandles());
+			System.out.println("Total window are ==============================> " + windowHandles.size());
+			driver.switchTo().window(windowHandles.get(Scroll));
 		}
 
 		if (Action.equalsIgnoreCase("MOUSEHOVER")) {
@@ -127,9 +122,9 @@ public class ActionClass extends ConnectDataSheet {
 		if (Action.equalsIgnoreCase("MOUSEDRAG")) {
 			FROM = element;
 			System.out.println(FROM);
-			
+
 		}
-		
+
 		if (Action.equalsIgnoreCase("MOUSEDROP")) {
 			System.out.println(element);
 			Actions act = new Actions(driver);
@@ -144,10 +139,10 @@ public class ActionClass extends ConnectDataSheet {
 		/////////////// ******************IFRAME*************************//////////////////////////
 
 		if (Action.contains("FRAMEINDEX")) {
-			
+
 			String digit = getOnlyDigit(Action); // call the getdigit method to get the data
 			int index = Integer.parseInt(digit);
-			
+
 			driver.switchTo().frame(index);
 			System.out.println("Frame Switch Successfully Using Index");
 		}
@@ -173,13 +168,11 @@ public class ActionClass extends ConnectDataSheet {
 			GetText = element.getText();
 			System.out.println(GetText);
 		}
-		
+
 		if (Action.equalsIgnoreCase("GetIshineOTP")) {
-			String otp=GetText.substring(21,27);
+			String otp = GetText.substring(21, 27);
 			element.sendKeys(otp);
 		}
-		
-		
 
 		if (Action.equalsIgnoreCase("SelectVisibleText")) {
 			System.out.println(element);
@@ -227,15 +220,13 @@ public class ActionClass extends ConnectDataSheet {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0, " + -Scroll + ")", "");
 		}
-		
-		if (Action.contains("ScrollwebElementUntilVisible")) {     // Scrolling down the page till the webElement is found	
 
-			JavascriptExecutor js = (JavascriptExecutor) driver;		
-	        js.executeScript("arguments[0].scrollIntoView();", element);
+		if (Action.contains("ScrollwebElementUntilVisible")) { // Scrolling down the page till the webElement is found
+
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].scrollIntoView();", element);
 		}
-		
-		
-		
+
 		if (Action.equalsIgnoreCase("CheckVisibility")) {
 
 			Boolean Verify = Boolean.parseBoolean(DataSheet2Value);
@@ -243,10 +234,10 @@ public class ActionClass extends ConnectDataSheet {
 			if (Verify) {
 				try {
 					System.out.println(element);
-					ActualResult =element.isDisplayed();
-					System.out.println("ActualResultpass========="+ActualResult);
+					ActualResult = element.isDisplayed();
+					System.out.println("ActualResultpass=========" + ActualResult);
 					if (ActualResult) {
-						ConnectDataSheet.status="PASS";
+						ConnectDataSheet.status = "PASS";
 //						utilClass.testCaseCreate(TestCase_No);
 						utilClass.passTestCase();
 						System.out.println("webElement is Display");
@@ -254,8 +245,8 @@ public class ActionClass extends ConnectDataSheet {
 					}
 				} catch (Exception e) {
 					ActualResult = false;
-					System.out.println("ActualResultFail======"+ActualResult);
-					ConnectDataSheet.status="FAIL";
+					System.out.println("ActualResultFail======" + ActualResult);
+					ConnectDataSheet.status = "FAIL";
 //					utilClass.testCaseCreate(TestCase_No);
 					utilClass.failTestCase();
 					System.out.println("webElement is not Display");

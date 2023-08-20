@@ -30,8 +30,6 @@ public class ConnectToMainController {
 	public static void MainContolerSheet() throws FilloException, InterruptedException, IOException {
 		conDataSheet = new ConnectDataSheet();
 
-		// TODO Auto-generated method stub
-
 		String MainControler = System.getProperty("user.dir") + File.separator + "Main_Controller.xlsx";
 		File file = new File(MainControler);
 

@@ -16,10 +16,6 @@ import com.codoid.products.fillo.Recordset;
 
 public class ConnectDataSheet extends BrowserClass {
 
-//	public static void main(String[] args) throws FilloException {
-//		System.out.println("DataSheet2Value");
-//		m1();
-//	}
 	public static String Si_No;
 	public static String MODULE;
 	public static String PageName;
@@ -116,41 +112,10 @@ public class ConnectDataSheet extends BrowserClass {
 
 			// this type is working properly****************************
 
-//		List<String> al = new ArrayList<String>();
-//		while (recordset.next()) {
-//			LOCATOR=recordset.getField("LOCATOR");
-//			PropertyValue = recordset.getField("PropertyValue");
-//			Datafield = recordset.getField("Datafield");
-//			Action = recordset.getField("Action");
-//			al.add(LOCATOR);
-//			al.add(XPATH);
-//			al.add(Datafield);
-//			al.add(Action);
-//		}******************************************************
-
-//		for (Object o : rowsList) {
-//			System.out.println(o);
-//		}
-
-			// **************************************************
-
-//		System.out.println(rowsList);
-//		return rowsList;
-
-			/*
-			 * utilClass.CsvFileCreate(); utilClass.WriteCSVFile("Si_No", "TestCase_No",
-			 * "Status", "Screenshot_Path"); utilClass.extentReport(); ///// call the extent
-			 * report class
-			 */
-
-			utilClass.extentReport();  //call the extent report method 
+			utilClass.extentReport(); // call the extent report method
 
 			int i;
 			for (i = 0; i < rowsList.size(); i++) {
-
-//				if (i == 0) {
-//					utilClass.extentReport(); ///// call the extent report class		
-//				}
 
 				destFileScrnshot = null;
 				status = "PASS";
@@ -169,7 +134,6 @@ public class ConnectDataSheet extends BrowserClass {
 				Description = (String) row.get(10);
 				Scenario_ID = (String) row.get(11);
 
-//			 System.out.println("LOCATOR NAME=========================>"+LOCATOR+"\n"+"PropertyValue====================>"+PropertyValue+"\n"+"Datafield=============>"+Datafield+"\n"+"ActionType========>"+Action);
 				System.out.println();
 				System.out.println("SI_No             ====================> " + Si_No);
 				System.out.println("Scenario_ID       ====================> " + Scenario_ID);
@@ -177,19 +141,6 @@ public class ConnectDataSheet extends BrowserClass {
 				System.out.println("PropertyValue     ====================> " + PropertyValue);
 				System.out.println("Datafield         ====================> " + Datafield);
 				System.out.println("ActionType        ====================> " + Action);
-
-				/*
-				 * if (Description != null && !Description.isEmpty()) { String
-				 * testCaseAndDescription = TestCase_No.concat(" " + Description);
-				 * UtilScreenshotAndReport.testCaseCreate(testCaseAndDescription); if
-				 * (!Action.equalsIgnoreCase("CheckVisibility")) {
-				 * UtilScreenshotAndReport.testcaseInfo(Description); } }
-				 */
-
-				/*
-				 * TestCase_No, PropertyName, PropertyValue, Datafield, Action, Description,
-				 * Neg_Description, driver
-				 */
 
 				if (!Test_Case.equals(sTest_Case)) {
 					utilClass.testCaseCreate();
@@ -210,40 +161,6 @@ public class ConnectDataSheet extends BrowserClass {
 					System.out.println("TotalTest = " + totalTest + " Pass = " + pass + " Fail = " + fail);
 
 				}
-
-				/*
-				 * if (!Action.contains("wait") && Action.equalsIgnoreCase("CheckVisibility")) {
-				 * utilClass.WriteCSVFile(Si_No, TestCase_No, status, destFileScrnshot); }
-				 */
-
-//				UtilScreenshotAndReport.test.log(Status.INFO, Description);
-//			locatorClass.xpathpick((String) row.get(1), (String) row.get(2), (String) row.get(3), (String) row.get(4), driver);
-
-//			 for( j=1;j<row.size();j++)
-//			 {
-//				 if(j==1)
-//				 {
-//					 LOCATOR=(String) row.get(j);
-//				 }
-//				 
-//				 else if(j==2) {
-//					 PropertyValue=(String) row.get(j);
-//				 }
-//				 
-//				 else if(j==3) {
-//					 Datafield=(String) row.get(j);
-//				 }
-//				 
-//				 else if(j==4) {
-//					 Action=(String) row.get(j);
-//				 }
-//
-//			 }
-//			System.out.println("LOCATOR NAME=========================>" + (String) row.get(1) + "\n"
-//					+ "PropertyValue====================>" + (String) row.get(2) + "\n" + "Datafield=============>"
-//					+ (String) row.get(3) + "\n" + "ActionType========>" + (String) row.get(4));
-
-//			 locatorClass.xpathpick(LOCATOR, PropertyValue, Datafield, Action, driver);
 
 			}
 			if (i == rowsList.size()) {
@@ -277,32 +194,20 @@ public class ConnectDataSheet extends BrowserClass {
 
 	public static void DataFieldRead() throws FilloException, InterruptedException, IOException {
 
-		/*
-		 * String TestCase_No, WebElement webElement, List<WebElement> webElements,
-		 * String Datafield, String Action, String Description, String Neg_Description,
-		 * WebDriver driver
-		 */
-
 		actClass = new ActionClass();
 
-		if (Datafield != null && !Datafield.isEmpty())
-
-		{
-
+		if (Datafield != null && !Datafield.isEmpty()) {
 			Fillo fillo = new Fillo();
 			Connection conn = fillo.getConnection(System.getProperty("user.dir") + File.separator + "DataSheet"
 					+ File.separator + ConnectToMainController.TestFlow_Path);
 			String query = "SELECT * FROM Sheet2";
 			Recordset recordset = conn.executeQuery(query);
+			
 			while (recordset.next()) {
 				DataSheet2Value = recordset.getField(Datafield);
 				System.out.println("DataFiels For Sheet2==================================================== "
 						+ DataSheet2Value + "\n");
 //				ActionClass.actrds();
-
-				// TestCase_No, webElement, webElements, DataSheet2Value, Action, Description,
-				// Neg_Description,
-				// driver
 			}
 
 			UtilScreenshotAndReport.testcaseInfoWithDataField();
@@ -310,13 +215,9 @@ public class ConnectDataSheet extends BrowserClass {
 		}
 
 		else {
-
 			UtilScreenshotAndReport.testcaseInfoWithoutDataField();
-
 			ActionClass.actrds();
-			// TestCase_No, webElement, webElements, DataSheet2Value, Action, Description,
-			// Neg_Description,
-			// driver
+
 		}
 
 	}
