@@ -18,7 +18,7 @@ public class BrowserClass {
 	public static void Initialisation(String browser) {
 
 		if (browser.equalsIgnoreCase("chrome")) {
-			WebDriverManager.chromedriver().setup();
+//			WebDriverManager.chromedriver().setup();
 			ChromeOptions option = new ChromeOptions();
 			option.addArguments("--remote-allow-origins=*");
 			driver = new ChromeDriver(option);
@@ -28,7 +28,7 @@ public class BrowserClass {
 		}
 
 		else if (browser.equalsIgnoreCase("edge")) {
-			WebDriverManager.edgedriver().setup();
+//			WebDriverManager.edgedriver().setup();
 			EdgeOptions option = new EdgeOptions();
 			option.addArguments("--remote-allow-origins=*");
 			driver = new EdgeDriver(option);
