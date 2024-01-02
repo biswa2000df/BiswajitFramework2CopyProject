@@ -183,13 +183,13 @@ public class normalclass {
 //			// TODO: handle exception
 //			System.err.println("An error occurred: " + e.getMessage());
 //		}
-
-		Fillo fillo = new Fillo();
-		Connection conn = fillo.getConnection(System.getProperty("user.dir") + "\\Subscription.xlsx");
-		String selectQuery = "SELECT * FROM Sheet6";
-		Recordset r = conn.executeQuery(selectQuery);
-
-		List<Object> rowList = new ArrayList<Object>();
+//
+//		Fillo fillo = new Fillo();
+//		Connection conn = fillo.getConnection(System.getProperty("user.dir") + "\\Subscription.xlsx");
+//		String selectQuery = "SELECT * FROM Sheet6";
+//		Recordset r = conn.executeQuery(selectQuery);
+//
+//		List<Object> rowList = new ArrayList<Object>();
 		/*
 		 * tale jou logic lekhichi First re sabu column name get kariki list re store
 		 * kariba List<String> columnName = r.getFieldNames();
@@ -213,32 +213,37 @@ public class normalclass {
 		 * particular objecttype arraylist ...To check it the two square bracket lisk
 		 * as[[]] object type array list
 		 */
+//
+//		while (r.next()) {
+//			List<String> columnName = r.getFieldNames();
+////			System.out.println(columnName); // [Srno, Module, PageName, RunStatus, Control, ObjectType, PropertyName,
+//			// PropertyValue, Datafield, Action, DataField_Type, Action_Type, Test_Case,
+//			// TestCase_Type, Description, Scenario_ID, Scenario_Description, COLUMN_17]
+//			List<Object> rowValue = new ArrayList<Object>();
+//			for (String s : columnName) {
+//				rowValue.add(r.getField(s));
+//			}
+////			System.out.println(rowValue); // [2, Subscription, Home Page, Y, C, , , , , deleteAllCookies, , , TC_01_01,
+//			// Positive, Redirects To 5 paisa Home page, SC_01, Ledger purchase flow, ]
+//			rowList.add(rowValue);
+//		}
+//
+//		System.out.println(rowList);
+//
+//		System.out.println(rowList.size());
+//
+//		for (int i = 0; i < rowList.size(); i++) {
+////			System.out.println(rowList.get(i));
+//			List<Object> row = (List<Object>) rowList.get(i);
+//			
+//			
+//		}
+		
 
-		while (r.next()) {
-			List<String> columnName = r.getFieldNames();
-//			System.out.println(columnName); // [Srno, Module, PageName, RunStatus, Control, ObjectType, PropertyName,
-			// PropertyValue, Datafield, Action, DataField_Type, Action_Type, Test_Case,
-			// TestCase_Type, Description, Scenario_ID, Scenario_Description, COLUMN_17]
-			List<Object> rowValue = new ArrayList<Object>();
-			for (String s : columnName) {
-				rowValue.add(r.getField(s));
-			}
-//			System.out.println(rowValue); // [2, Subscription, Home Page, Y, C, , , , , deleteAllCookies, , , TC_01_01,
-			// Positive, Redirects To 5 paisa Home page, SC_01, Ledger purchase flow, ]
-			rowList.add(rowValue);
-		}
-
-		System.out.println(rowList);
-
-		System.out.println(rowList.size());
-
-		for (int i = 0; i < rowList.size(); i++) {
-//			System.out.println(rowList.get(i));
-			List<Object> row = (List<Object>) rowList.get(i);
-			
-			
-		}
-
+		
+		Date date = new Date();
+		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd");
+		System.out.println(formate.format(date));
 	}
 
 }

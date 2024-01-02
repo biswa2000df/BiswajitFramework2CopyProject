@@ -1,21 +1,19 @@
 package FRAMEWORK;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.WindowType;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import dev.failsafe.internal.util.Assert;
 
 public class ActionClass extends ConnectDataSheet {
 
@@ -25,6 +23,7 @@ public class ActionClass extends ConnectDataSheet {
 	static UtilScreenshotAndReport utilClass;
 	public static WebElement element;
 	public static List<WebElement> elements;
+	static Robot robot;
 
 	public static boolean ActualResult;
 
@@ -33,8 +32,8 @@ public class ActionClass extends ConnectDataSheet {
 		elements = ConnectDataSheet.webElements;
 	}
 
-	public static void actrds() throws InterruptedException, IOException {
-
+	public static void actrds() throws Exception {
+		robot = new Robot();
 		utilClass = new UtilScreenshotAndReport();
 
 		if (Action.equalsIgnoreCase("SendKeys")) {
@@ -43,6 +42,10 @@ public class ActionClass extends ConnectDataSheet {
 
 		if (Action.equalsIgnoreCase("click")) {
 			element.click();
+		}
+		
+		if (Action.equalsIgnoreCase("clear")) {
+			element.clear();
 		}
 
 		if (Action.contains("wait")) {
@@ -92,10 +95,10 @@ public class ActionClass extends ConnectDataSheet {
 		if (Action.contains("WindowHandelByIndex")) {
 
 			String digit = getOnlyDigit(Action); // call the getdigit method to get the data
-			int Scroll = Integer.parseInt(digit);
+			int SwitchWindow = Integer.parseInt(digit);
 			ArrayList<String> windowHandles = new ArrayList<>(driver.getWindowHandles());
 			System.out.println("Total window are ==============================> " + windowHandles.size());
-			driver.switchTo().window(windowHandles.get(Scroll));
+			driver.switchTo().window(windowHandles.get(SwitchWindow));
 		}
 
 		if (Action.equalsIgnoreCase("MOUSEHOVER")) {
@@ -168,10 +171,20 @@ public class ActionClass extends ConnectDataSheet {
 			GetText = element.getText();
 			System.out.println(GetText);
 		}
+		
+		if (Action.equalsIgnoreCase("DisableFieldGetText")) {
+			GetText = element.getAttribute("value");
+			System.out.println(GetText);
+		}
 
 		if (Action.equalsIgnoreCase("GetIshineOTP")) {
 			String otp = GetText.substring(21, 27);
 			element.sendKeys(otp);
+		}
+		
+		if (Action.equalsIgnoreCase("GetTotalWorkingHour")) {
+			String Hour = GetText.substring(0, 1);
+			element.sendKeys(Hour);
 		}
 
 		if (Action.equalsIgnoreCase("SelectVisibleText")) {
@@ -203,7 +216,7 @@ public class ActionClass extends ConnectDataSheet {
 			driver.switchTo().alert().sendKeys(DataSheet2Value);
 		}
 
-		if (Action.contains("ScrollDown")) {
+		if (Action.contains("ScrollDown")) {  //ScrollDown(300)
 
 			String digit = getOnlyDigit(Action); // call the getdigit method to get the data
 			int Scroll = Integer.parseInt(digit);
@@ -254,7 +267,37 @@ public class ActionClass extends ConnectDataSheet {
 			}
 
 		}
+		
+		if(Action.equalsIgnoreCase("DateChoose")) {
+			TableDateTimeList();
+		}
+		
+		if(Action.equalsIgnoreCase("AM_Morning")) {
+			AM_GetText();
+		}
+		
+		if(Action.equalsIgnoreCase("PM_Night")) {
+			PM_GetText();
+		}
+		
+		if(Action.equalsIgnoreCase("VK_ENTER")) {
+			robot.keyPress(KeyEvent.VK_ENTER);
+		}
+		
 
+	}
+	
+	public static void AM_GetText() {
+		String DayCheck = element.getText();
+		System.out.println(DayCheck);
+		if(DayCheck.equalsIgnoreCase("PM"))
+			element.click();
+	}
+	
+	public static void PM_GetText() {
+		String DayCheck = element.getText();
+		if(DayCheck.equalsIgnoreCase("AM"))
+			element.click();
 	}
 
 	public static String getOnlyDigit(String Action) { ///////// inside the bracket get only the digit
@@ -270,6 +313,37 @@ public class ActionClass extends ConnectDataSheet {
 		}
 		return digit;
 
+	}
+	
+	public static void TableDateTimeList() {
+		String CheckDate = null;
+		UtilScreenshotAndReport.OnlyDateMonthFormate();
+		int rowSize = element.findElements(By.xpath("tr")).size();
+		for(int r = 1; r <= rowSize; r++) {
+//			int colSize = element.findElements(By.xpath("tr["+ r +"]/td")).size();
+			int colSize = element.findElements(By.xpath("tr["+ r +"]/td[  contains(@aria-label,'"+ UtilScreenshotAndReport.onlyMonth +" ')]")).size();
+			System.out.println("colsize = " + colSize);
+			for(int c = 1; c <= colSize; c++) {
+				 CheckDate = element.findElement(By.xpath("tr["+ r +"]/td["+ c +"]")).getText();
+				if(CheckDate.equalsIgnoreCase(UtilScreenshotAndReport.onlyDate)) {
+//				 if(CheckDate.equalsIgnoreCase("15")) {
+					element.findElement(By.xpath("tr["+ r +"]/td["+ c +"]")).click();
+					break;
+				}
+			}
+			////*[@class="owl-dt-calendar-view ng-star-inserted"]/table/tbody/tr[4]/td[3 and @aria-label="December 19, 2023"]
+			
+			
+			if(CheckDate.equalsIgnoreCase(UtilScreenshotAndReport.onlyDate)) {
+			
+//			 if(CheckDate.equalsIgnoreCase("15")) {
+				 System.out.println("Row = " + r);
+				break;
+			}
+			 
+			
+			
+		}
 	}
 
 }

@@ -25,7 +25,7 @@ public class LocatorClass extends ConnectDataSheet {
 	// is failed or
 	// it goes to the catch block to call the datasheet method().
 
-	public void xpathpick() throws FilloException, InterruptedException, IOException {
+	public void xpathpick() throws FilloException, InterruptedException, Exception {
 
 		webElement = null;
 		webElements = null;
@@ -57,6 +57,9 @@ public class LocatorClass extends ConnectDataSheet {
 				// Handle unsupported PropertyName type
 				throw new IllegalArgumentException("Unsupported PropertyName type: " + PropertyName);
 			}
+			
+			
+			
 			try {
 				webElement = driver.findElement(by);
 				webElements = driver.findElements(by);

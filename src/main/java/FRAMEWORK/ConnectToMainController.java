@@ -85,7 +85,7 @@ public class ConnectToMainController {
 //			System.out.println(process1);
 			}
 		} else {
-			System.out.println("MainMain_Controller File is Not Present");
+			System.out.println("Main_Controller File is Not Present");
 		}
 
 	}
@@ -146,6 +146,7 @@ public class ConnectToMainController {
 
 		String filePath = System.getProperty("user.dir") + File.separator+ "DataSheet" + File.separator + fileName;
 //	System.out.println(filePath);
+
 
 		File file = new File(filePath);
 		if (file.exists()) {

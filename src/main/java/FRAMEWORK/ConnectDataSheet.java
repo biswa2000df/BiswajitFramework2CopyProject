@@ -201,7 +201,7 @@ public class ConnectDataSheet extends BrowserClass {
 	// first check the datafield if it is not null then get the datafield value and
 	// pass the value to this method actrds();
 
-	public static void DataFieldRead() throws FilloException, InterruptedException, IOException {
+	public static void DataFieldRead() throws FilloException, InterruptedException, Exception {
 
 		actClass = new ActionClass();
 

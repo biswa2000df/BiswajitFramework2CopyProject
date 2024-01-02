@@ -38,7 +38,9 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 	public static String CSV_ReportFile;
 	public static String ssDatafield = null;
 	public static String ssDataSheet2Value = null;
-	
+	public static String onlyDate;
+	public static String onlyMonth;
+
 	static String IP = null;
 	static String HostName = "";
 	static String ZoneName = null;
@@ -85,6 +87,14 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 		return f;
 	}
 
+	public static void OnlyDateMonthFormate() {
+		Date date = new Date();
+		SimpleDateFormat formateDate = new SimpleDateFormat("dd");
+		onlyDate = formateDate.format(date);
+		SimpleDateFormat formateMonth = new SimpleDateFormat("MMMM");
+		onlyMonth = formateMonth.format(date);
+	}
+
 	public void extentReport() throws IOException {
 
 		String htmlFile = "students.html";
@@ -105,7 +115,8 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 		extent.setSystemInfo("FrameWork", "Biswajit Framework");
 		extent.setSystemInfo("Project Name", "ISHINE");
 		extent.setSystemInfo("Test Lead", "Prabhat Padhy");
-		extent.setSystemInfo("OS", "Window11");
+		extent.setSystemInfo("OS", System.getProperty("os.name"));
+		extent.setSystemInfo("User Name", System.getProperty("user.name"));
 		extent.setSystemInfo("Tester Name", "Biswajit");
 		extent.setSystemInfo("Browser", ConnectToMainController.Browser);
 		extent.setSystemInfo("Application URL", "https://www.google.com");
@@ -190,8 +201,8 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 	public void WriteCSVFileHeading(String Test_Case, String Description, String ExpectedResult, String ActualResult,
 			String Status, String Date, String Time, String Screenshot_File_Location, String BrowserType, String IP,
 			String HOST, String ZONE) throws IOException {
-		
-		CSV_ReportFile=destFile + File.separator + csvFile;
+
+		CSV_ReportFile = destFile + File.separator + csvFile;
 		fileWriter = new FileWriter(CSV_ReportFile, true);
 		CSVWriter cw = new CSVWriter(fileWriter);
 		String line1[] = { Test_Case, Description, ExpectedResult, ActualResult, Status, Date, Time,
@@ -208,7 +219,7 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 	public void WriteCSVFileData(String Test_Case, String Description, String ExpectedResult, String ActualResult,
 			String Status, String Date, String Time, String Screenshot_File_Location, String BrowserType, String IP,
 			String HOST, String ZONE) throws IOException {
-		CSV_ReportFile=destFile + File.separator + csvFile;
+		CSV_ReportFile = destFile + File.separator + csvFile;
 		fileWriter = new FileWriter(CSV_ReportFile, true);
 		CSVWriter cw = new CSVWriter(fileWriter);
 		String line1[] = { Test_Case, Description, ExpectedResult, ActualResult, Status, Date, Time,
@@ -239,7 +250,8 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 		writer.write(
 				"<tr> <th><font color=\"Lime\">Project</font></th><th><font color=\"Blue\">Total TCs</font></th><th><font color=\"Green\">Passed TCs</font></th><th><font color=\"Red\">Failed TCs</font></th><th>Report</th><th>CSV_File</th></tr>");
 		writer.write("<td>" + ConnectToMainController.Module + "</td><td>" + totalTest + "</td><td>" + pass
-				+ "</td><td>" + fail + "</td><td><a href=" + Extent_ReportFile + " target=_blank>Extent_Report</a></td><td><a href=" + CSV_ReportFile + " target=_blank>CSV</a></td>");
+				+ "</td><td>" + fail + "</td><td><a href=" + Extent_ReportFile
+				+ " target=_blank>Extent_Report</a></td><td><a href=" + CSV_ReportFile + " target=_blank>CSV</a></td>");
 
 //	            for (int i = 0; i < numRows; i++) {
 //	                writer.write("<tr>\n");
@@ -288,7 +300,7 @@ public class UtilScreenshotAndReport extends ConnectDataSheet {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		
+
 	}
 
 }
